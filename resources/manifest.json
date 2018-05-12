@@ -1,0 +1,13 @@
+{
+    "name": "Web Script Injector",
+    "description": "Allows you to view stats on Pokemon Showdown",
+    "version": "1.0.0",
+    "permissions": ["<all_urls>"],
+    "content_scripts": [{
+      "matches": ["<all_urls>"],
+      "js": ["launch.js"],
+      "css": ["styles.css"]
+    }],
+    "web_accessible_resources" : ["build.js"],
+    "manifest_version":2
+}

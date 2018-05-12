@@ -1,0 +1,26 @@
+{
+  "name": "Web-Script-Injector",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/L1lith/Web-Script-Injector.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/L1lith/Web-Script-Injector/issues"
+  },
+  "homepage": "https://github.com/L1lith/Web-Script-Injector#readme",
+  "dependencies": {
+    "copy-webpack-plugin": "^4.5.1",
+    "uglifyjs-webpack-plugin": "^1.2.5",
+    "webpack": "^4.8.3",
+    "yargs": "^11.0.0"
+  }
+}
