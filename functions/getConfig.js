@@ -1,3 +1,5 @@
+import validateConfig from './validateConfig'
+
 function getConfig() {
   return new Promise((resolve, reject) => {
     window.chrome.storage.sync.get("wsiconfig", items => {
@@ -6,7 +8,8 @@ function getConfig() {
       try {
         config = JSON.parse(config)
       } catch(error) { return reject('Config Invalid JSON')}
-      if (typeof config != 'object' || config === null) return reject('Config not an object')
+      const {valid, error} = validateConfig(config)
+      if (valid !== true) return reject(error)
       resolve(config)
     })
   })

@@ -4,7 +4,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const path = require('path')
 
 module.exports = {
-  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
+  mode: process.env.NODE_ENV,
   entry: {
     'contentScript': path.resolve(__dirname, 'contentScript.js'),
     'popup': path.resolve(__dirname, 'popup.js')
@@ -39,7 +39,7 @@ module.exports = {
   		    unused: true,
   		    if_return: true,
   		    join_vars: true,
-  		    drop_console: true
+  		    //drop_console: true
         }
       }
     }),

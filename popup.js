@@ -1,13 +1,19 @@
 import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
 import queryCurrentTab from './functions/queryCurrentTab'
-import getConfig from './getConfig'
+import getConfig from './functions/getConfig'
+import saveConfig from './functions/saveConfig'
+
+const defaultConfig = {
+  siteFiles: {},
+  globalFiles: {}
+}
 
 window.addEventListener('load', () => {
   getConfig().then(config => {
     ReactDOM.render(<Application config={config}/>, document.body)
   }).catch(() => {
-    ReactDOM.render(<Application config={{}}/>, document.body)
+    ReactDOM.render(<Application config={{...defaultConfig}}/>, document.body)
   })
 })
 
@@ -15,7 +21,7 @@ class Application extends Component {
   constructor(props) {
     super(props)
     this.state = {local: true, type: 'javascript', isSaving: false};
-    ['setLocal', 'setType', 'save'].forEach(prop => this[prop] = this[prop].bind(this))
+    ['setLocal', 'setType', 'save', 'displayError'].forEach(prop => this[prop] = this[prop].bind(this))
   }
   render() {
     return (
@@ -49,13 +55,28 @@ class Application extends Component {
     this.setState({...this.state, isSaving: true})
     this.isSaving = true
     const doneSaving = ()=>{this.setState({...this.state, isSaving: false}); this.isSaving = false}
-    if (this.state.local === true) {
-      queryCurrentTab().then(tab => {
-        const {url} = tab
-      }).catch(err=>{
+    const doSaveConfig = ()=>{
+      saveConfig(this.props.config).then(doneSaving).catch(err => {
         doneSaving()
         this.displayError(err)
       })
     }
+    if (this.state.local === true) {
+      queryCurrentTab().then(tab => {
+        const {url} = tab
+        if (!this.props.config.siteFiles.hasOwnProperty(url)) this.props.config.siteFiles[url] = {}
+        this.props.config.siteFiles[url][this.state.type] = content
+        doSaveConfig()
+      }).catch(err=>{
+        doneSaving()
+        this.displayError(err)
+      })
+    } else {
+      this.props.config.globalFiles[this.state.type] = content
+      doSaveConfig()
+    }
+  }
+  displayError(error) {
+    console.log(error)
   }
 }
