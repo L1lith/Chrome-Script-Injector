@@ -34,6 +34,9 @@ th:nth-child(2) button.inactive {
 .options button {
   width: 100%;
 }
+.options tr:first-child {
+  border-bottom: 1px solid #cedcff;
+}
 .options, .options tr, .options th {
   padding: 0;
   margin: 0;
@@ -47,4 +50,7 @@ th:nth-child(2) button.inactive {
   min-width: min-content;
   min-height: 200px;
   resize: none;
+}
+button.save:active {
+  background-color: #75a1da;
 }

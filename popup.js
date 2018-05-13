@@ -8,7 +8,7 @@ window.addEventListener('load', () => {
 class Application extends Component {
   constructor(props) {
     super(props)
-    this.state = {local: true, type: 'javascript'};
+    this.state = {local: true, type: 'javascript', isSaving: false};
     ['setLocal', 'setType', 'save'].forEach(prop => this[prop] = this[prop].bind(this))
   }
   render() {
@@ -25,7 +25,7 @@ class Application extends Component {
           </tr>
         </table>
         <textarea placeholder='Start Coding...' className='editor'/>
-        <button onSubmit={this.save} className='save'>Save</button>
+        <button onClick={this.save} className='save'>{this.state.isSaving !== true ? 'Save' : 'Saving...'}</button>
       </main>
     )
   }
@@ -36,6 +36,8 @@ class Application extends Component {
     this.setState({...this.state, type})
   }
   save() {
-
+    if (this.isSaving === true) return
+    this.setState({...this.state, isSaving: true})
+    this.isSaving = true
   }
 }
