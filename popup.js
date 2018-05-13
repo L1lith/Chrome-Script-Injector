@@ -9,7 +9,7 @@ class Application extends Component {
   constructor(props) {
     super(props)
     this.state = {local: true, type: 'javascript'};
-    ['setLocal', 'setType'].forEach(prop => this[prop] = this[prop].bind(this))
+    ['setLocal', 'setType', 'save'].forEach(prop => this[prop] = this[prop].bind(this))
   }
   render() {
     return (
@@ -24,7 +24,8 @@ class Application extends Component {
             <th><button onClick={this.setType.bind(null, 'css')} className={'kind ' + (this.state.type === 'css' ? 'active' : 'inactive')}>CSS</button></th>
           </tr>
         </table>
-        <textarea className='editor'/>
+        <textarea placeholder='Start Coding...' className='editor'/>
+        <button onSubmit={this.save} className='save'>Save</button>
       </main>
     )
   }
@@ -33,5 +34,8 @@ class Application extends Component {
   }
   setType(type) {
     this.setState({...this.state, type})
+  }
+  save() {
+
   }
 }

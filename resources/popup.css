@@ -5,7 +5,8 @@ body {
   min-width: 350px;
   margin: 0;
   padding: 0;
-  border-radius: 5px;
+  border: 2px solid #759eff;
+  border-radius: 4px;
 }
 button {
   padding: 5px;
@@ -16,6 +17,9 @@ button {
 button.active {
   background-color: #4790ff;
 }
+main > * {
+  width: 100%;
+}
 th:first-child button.inactive {
   background: linear-gradient(to right, #8fc0ff, #8fc0ff, #4790ff);
 }
@@ -24,7 +28,6 @@ th:nth-child(2) button.inactive {
 }
 .options {
   background-color: #8fc0ff;
-  width: 100%;
   border-collapse: collapse;
   border-spacing: 0;
 }
@@ -38,8 +41,9 @@ th:nth-child(2) button.inactive {
   line-height: 0;
 }
 .editor {
+  border: none;
   padding: 10px;
-  width: calc(100% - 20px);
+  width: calc(100% - 24px);
   min-width: min-content;
   min-height: 200px;
   resize: none;
