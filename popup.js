@@ -64,6 +64,7 @@ class Application extends Component {
     this.editor.value = ''
   }
   load(inputObject={}) {
+    if (this.state.isSaving === true) return
     let {type, local} = inputObject
     if (!this.hasOwnProperty('state')) return
     if (!type && this.state.type) type = this.state.type
@@ -89,7 +90,6 @@ class Application extends Component {
   save() {
     if (!this.hasOwnProperty('editor')) return
     const content = this.editor.value
-    if (content.length < 1) return
     if (this.isSaving === true) return
     this.setState({...this.state, isSaving: true})
     this.isSaving = true
