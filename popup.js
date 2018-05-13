@@ -25,9 +25,12 @@ class Application extends Component {
   constructor(props) {
     super(props)
     this.state = {local: true, type: 'javascript', isSaving: false};
-    ['setLocal', 'setType', 'save', 'displayError', 'load'].forEach(prop => this[prop] = this[prop].bind(this))
+    ['setLocal', 'setType', 'save', 'displayError', 'load', 'clearEditor'].forEach(prop => this[prop] = this[prop].bind(this))
   }
-  componentWillMount() {
+  componentDidMount() {
+    this.load()
+  }
+  componentDidUpdate() {
     this.load()
   }
   render() {
@@ -49,27 +52,35 @@ class Application extends Component {
     )
   }
   setLocal(local) {
-    if (local !== this.state.local) this.load({local, type: this.state.type})
+    //if (local !== this.state.local) this.load({local, type: this.state.type})
     this.setState({...this.state, local: local === true})
   }
   setType(type) {
-    if (type !== this.state.type) this.load({type, local: this.state.local})
+    //if (type !== this.state.type) this.load({type, local: this.state.local})
     this.setState({...this.state, type})
   }
-  load({type=this.state.type, local=this.state.local}) {
-    console.log({editor: this.editor, local, type, config: this.props.config})
+  clearEditor() {
+    if (!this.hasOwnProperty('editor')) return
+    this.editor.value = ''
+  }
+  load(inputObject={}) {
+    let {type, local} = inputObject
+    if (!this.hasOwnProperty('state')) return
+    if (!type && this.state.type) type = this.state.type
+    if (!local && this.state.local) local = this.state.local
     if (!this.hasOwnProperty('editor')) return
     const {config} = this.props
     if (local) {
       queryCurrentTab().then(tab => {
         const domain = getDomain(tab.url)
-        if (!config.siteFiles.hasOwnProperty(domain) || !config.siteFiles[domain].hasOwnProperty(type)) return
+        if (!config.siteFiles.hasOwnProperty(domain) || !config.siteFiles[domain].hasOwnProperty(type)) return this.clearEditor()
         const id = config.siteFiles[domain][type]
         loadFile(id).then(content => {
           this.editor.value = content
         })
       })
     } else {
+      if (!config.globalFiles.hasOwnProperty(type)) return this.clearEditor()
       loadFile(config.globalFiles[type]).then(content => {
         this.editor.value = content
       })
