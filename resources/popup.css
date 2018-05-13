@@ -1,26 +1,46 @@
+* {
+  outline: none;
+}
 body {
-  min-width: 150px;
-  font-size: 1.3em;
+  min-width: 350px;
+  margin: 0;
+  padding: 0;
+  border-radius: 5px;
 }
 button {
   padding: 5px;
-  border-radius: 4px;
   border: none;
   background-color: #8fc0ff;
   color: white;
-  outline: none;
-  transition: background-color 0.1s linear;
 }
 button.active {
-  background-color: #0064ff;
-  transition: background-color 0.3s linear;
+  background-color: #4790ff;
+}
+th:first-child button.inactive {
+  background: linear-gradient(to right, #8fc0ff, #8fc0ff, #4790ff);
+}
+th:nth-child(2) button.inactive {
+  background: linear-gradient(to right, #4790ff, #8fc0ff, #8fc0ff);
 }
 .options {
+  background-color: #8fc0ff;
   width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
 }
 .options button {
   width: 100%;
 }
-.options th {
+.options, .options tr, .options th {
   padding: 0;
+  margin: 0;
+  height: min-content;
+  line-height: 0;
+}
+.editor {
+  padding: 10px;
+  width: calc(100% - 20px);
+  min-width: min-content;
+  min-height: 200px;
+  resize: none;
 }

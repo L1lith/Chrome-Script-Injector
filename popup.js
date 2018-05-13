@@ -24,6 +24,7 @@ class Application extends Component {
             <th><button onClick={this.setType.bind(null, 'css')} className={'kind ' + (this.state.type === 'css' ? 'active' : 'inactive')}>CSS</button></th>
           </tr>
         </table>
+        <textarea className='editor'/>
       </main>
     )
   }
