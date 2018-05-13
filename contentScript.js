@@ -4,9 +4,10 @@ import getConfig from './functions/getConfig'
 function setup() {
   return new Promise((resolve, reject) => {
     getConfig().then(config => {
-      const {files} = config
-      if (!Array.isArray(files)) return reject('Files Not Array')
-      return Promise.all(files.map(fileConfig => setupFile))
+      const siteFiles = config[getDomain(window.location.href)]
+      const {globalFiles} = config
+      console.log({siteFiles, globalFiles})
+      return Promise.all([siteFiles, globalFiles].map(setupFiles))
     }).catch(reject)
   })
 }

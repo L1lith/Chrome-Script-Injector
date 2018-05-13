@@ -5,7 +5,7 @@ const fileKindToElement = {
   css: () => createElement('link', {attributes: {rel: 'stylesheet', type: 'text/css'}})
 }
 
-function setupFile({kind, path}) {
+export function setupFile({kind, path}) {
   return Promise((resolve, reject) => {
     if (typeof kind != 'string' || !fileKindToElement.hasOwnProperty(kind)) return reject('Invalid Kind')
     window.chrome.storage.sync.get(path, items => {
@@ -19,4 +19,7 @@ function setupFile({kind, path}) {
   })
 }
 
-export default setupFile
+export function setupFiles(files) {
+  
+}
+export default setupFiles

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import queryCurrentTab from './functions/queryCurrentTab'
 import getConfig from './functions/getConfig'
 import saveConfig from './functions/saveConfig'
+import getDomain from './functions/getDomain'
 
 const defaultConfig = {
   siteFiles: {},
@@ -63,9 +64,9 @@ class Application extends Component {
     }
     if (this.state.local === true) {
       queryCurrentTab().then(tab => {
-        const {url} = tab
-        if (!this.props.config.siteFiles.hasOwnProperty(url)) this.props.config.siteFiles[url] = {}
-        this.props.config.siteFiles[url][this.state.type] = content
+        const domain = getDomain(tab.url)
+        if (!this.props.config.siteFiles.hasOwnProperty(domain)) this.props.config.siteFiles[domain] = {}
+        this.props.config.siteFiles[domain][this.state.type] = content
         doSaveConfig()
       }).catch(err=>{
         doneSaving()
