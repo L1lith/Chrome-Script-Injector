@@ -1,9 +1,14 @@
 import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
 import queryCurrentTab from './functions/queryCurrentTab'
+import getConfig from './getConfig'
 
 window.addEventListener('load', () => {
-  ReactDOM.render(<Application/>, document.body)
+  getConfig().then(config => {
+    ReactDOM.render(<Application config={config}/>, document.body)
+  }).catch(() => {
+    ReactDOM.render(<Application config={{}}/>, document.body)
+  })
 })
 
 class Application extends Component {
@@ -47,7 +52,6 @@ class Application extends Component {
     if (this.state.local === true) {
       queryCurrentTab().then(tab => {
         const {url} = tab
-
       }).catch(err=>{
         doneSaving()
         this.displayError(err)
