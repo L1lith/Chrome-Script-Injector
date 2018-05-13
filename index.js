@@ -16,9 +16,13 @@ function setup() {
   })
 }
 
-console.log('WSI: Setting Up')
-setup().then(() => {
-  console.log('WSI: Finished Setting Up')
-}).catch(err => {
-  console.log('WSI: Error Setting Up,', err)
-})
+function run() {
+  console.log('WSI: Setting Up')
+  setup().then(() => {
+    console.log('WSI: Finished Setting Up')
+  }).catch(err => {
+    console.log('WSI: Error Setting Up,', err)
+  })
+}
+
+window.addEventListener('load', run)
