@@ -4,3 +4,5 @@ function getDomain(url) {
   hostNameParts = hostNameParts.slice(Math.max(hostNameParts.length - 2, 1))
   return hostNameParts.join('.')
 }
+
+export default getDomain

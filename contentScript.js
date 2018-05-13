@@ -1,12 +1,13 @@
-import setupFile from './functions/setupFile'
+import setupFiles from './functions/setupFiles'
 import getConfig from './functions/getConfig'
+import getDomain from './functions/getDomain'
 
 function setup() {
   return new Promise((resolve, reject) => {
     getConfig().then(config => {
-      const siteFiles = config[getDomain(window.location.href)]
+      const siteFiles = config.siteFiles[getDomain(window.location.href)] || {}
       const {globalFiles} = config
-      console.log({siteFiles, globalFiles})
+
       return Promise.all([siteFiles, globalFiles].map(setupFiles))
     }).catch(reject)
   })

@@ -15,7 +15,7 @@ module.exports = {
   },
   resolve: {
     alias: {
-      '@data': path.resolve(__dirname,'data')
+      //'@data': path.resolve(__dirname,'data')
     }
   },
   module: {

@@ -4,10 +4,13 @@ import queryCurrentTab from './functions/queryCurrentTab'
 import getConfig from './functions/getConfig'
 import saveConfig from './functions/saveConfig'
 import getDomain from './functions/getDomain'
+import saveFile from './functions/saveFile'
+import loadFile from './functions/loadFile'
 
 const defaultConfig = {
   siteFiles: {},
-  globalFiles: {}
+  globalFiles: {},
+  totalFiles: 0
 }
 
 window.addEventListener('load', () => {
@@ -22,7 +25,10 @@ class Application extends Component {
   constructor(props) {
     super(props)
     this.state = {local: true, type: 'javascript', isSaving: false};
-    ['setLocal', 'setType', 'save', 'displayError'].forEach(prop => this[prop] = this[prop].bind(this))
+    ['setLocal', 'setType', 'save', 'displayError', 'load'].forEach(prop => this[prop] = this[prop].bind(this))
+  }
+  componentWillMount() {
+    this.load()
   }
   render() {
     return (
@@ -43,10 +49,31 @@ class Application extends Component {
     )
   }
   setLocal(local) {
+    if (local !== this.state.local) this.load({local, type: this.state.type})
     this.setState({...this.state, local: local === true})
   }
   setType(type) {
+    if (type !== this.state.type) this.load({type, local: this.state.local})
     this.setState({...this.state, type})
+  }
+  load({type=this.state.type, local=this.state.local}) {
+    console.log({editor: this.editor, local, type, config: this.props.config})
+    if (!this.hasOwnProperty('editor')) return
+    const {config} = this.props
+    if (local) {
+      queryCurrentTab().then(tab => {
+        const domain = getDomain(tab.url)
+        if (!config.siteFiles.hasOwnProperty(domain) || !config.siteFiles[domain].hasOwnProperty(type)) return
+        const id = config.siteFiles[domain][type]
+        loadFile(id).then(content => {
+          this.editor.value = content
+        })
+      })
+    } else {
+      loadFile(config.globalFiles[type]).then(content => {
+        this.editor.value = content
+      })
+    }
   }
   save() {
     if (!this.hasOwnProperty('editor')) return
@@ -55,26 +82,29 @@ class Application extends Component {
     if (this.isSaving === true) return
     this.setState({...this.state, isSaving: true})
     this.isSaving = true
+    const {config} = this.props
     const doneSaving = ()=>{this.setState({...this.state, isSaving: false}); this.isSaving = false}
-    const doSaveConfig = ()=>{
-      saveConfig(this.props.config).then(doneSaving).catch(err => {
-        doneSaving()
-        this.displayError(err)
-      })
-    }
+    console.log({config})
     if (this.state.local === true) {
       queryCurrentTab().then(tab => {
         const domain = getDomain(tab.url)
-        if (!this.props.config.siteFiles.hasOwnProperty(domain)) this.props.config.siteFiles[domain] = {}
-        this.props.config.siteFiles[domain][this.state.type] = content
-        doSaveConfig()
+        if (!config.siteFiles.hasOwnProperty(domain)) config.siteFiles[domain] = {}
+        if (!config.siteFiles[domain].hasOwnProperty(this.state.type)) config.siteFiles[domain][this.state.type] = (++config.totalFiles).toString()
+        saveConfig(config).then(()=>{
+          const fileID = config.siteFiles[domain][this.state.type]
+          saveFile(fileID, content).then(doneSaving)
+        })
       }).catch(err=>{
         doneSaving()
         this.displayError(err)
       })
     } else {
-      this.props.config.globalFiles[this.state.type] = content
-      doSaveConfig()
+      if (!config.globalFiles.hasOwnProperty(this.state.type)) {
+        config.globalFiles[this.state.type] = ++config.totalFiles
+        saveConfig(config)
+      }
+      const fileID = config.globalFiles[this.state.type]
+      saveFile(fileID, content).then(doneSaving)
     }
   }
   displayError(error) {
