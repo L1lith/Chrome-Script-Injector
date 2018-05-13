@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import ReactDOM from 'react-dom'
+import queryCurrentTab from './functions/queryCurrentTab'
 
 window.addEventListener('load', () => {
   ReactDOM.render(<Application/>, document.body)
@@ -24,7 +25,7 @@ class Application extends Component {
             <th><button onClick={this.setType.bind(null, 'css')} className={'kind ' + (this.state.type === 'css' ? 'active' : 'inactive')}>CSS</button></th>
           </tr>
         </table>
-        <textarea placeholder='Start Coding...' className='editor'/>
+        <textarea ref={ref => this.editor = ref} placeholder='Start Coding...' className='editor'/>
         <button onClick={this.save} className='save'>{this.state.isSaving !== true ? 'Save' : 'Saving...'}</button>
       </main>
     )
@@ -36,8 +37,21 @@ class Application extends Component {
     this.setState({...this.state, type})
   }
   save() {
+    if (!this.hasOwnProperty('editor')) return
+    const content = this.editor.value
+    if (content.length < 1) return
     if (this.isSaving === true) return
     this.setState({...this.state, isSaving: true})
     this.isSaving = true
+    const doneSaving = ()=>{this.setState({...this.state, isSaving: false}); this.isSaving = false}
+    if (this.state.local === true) {
+      queryCurrentTab().then(tab => {
+        const {url} = tab
+
+      }).catch(err=>{
+        doneSaving()
+        this.displayError(err)
+      })
+    }
   }
 }
