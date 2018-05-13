@@ -14,10 +14,10 @@ class Application extends Component {
   render() {
     return (
       <main>
-        <table>
+        <table className='options'>
           <tr>
-            <th onClick={this.setLocal.bind(null, true)} className={this.state.local === true ? 'active' : 'inactive'}>This Domain</th>
-            <th onClick={this.setLocal.bind(null, false)} className={this.state.local === false ? 'active' : 'inactive'}>All Domains</th>
+            <th><button onClick={this.setLocal.bind(null, true)} className={'local ' + (this.state.local === true ? 'active' : 'inactive')}>This Domain</button></th>
+            <th><button onClick={this.setLocal.bind(null, false)} className={'local ' + (this.state.local === false ? 'active' : 'inactive')}>All Domains</button></th>
           </tr>
           <tr>
             <th></th>
