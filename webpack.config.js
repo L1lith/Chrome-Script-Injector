@@ -18,6 +18,15 @@ module.exports = {
       '@data': path.resolve(__dirname,'data')
     }
   },
+  module: {
+    rules: [
+      {
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        use: ['babel-loader']
+      }
+    ]
+  },
   plugins: [
     new UglifyJsPlugin({
       uglifyOptions: {
