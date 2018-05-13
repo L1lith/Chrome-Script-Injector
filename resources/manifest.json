@@ -1,7 +1,7 @@
 {
     "name": "Web Script Injector",
     "description": "Injects code into your favorite websites.",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "permissions": ["tabs","storage","<all_urls>"],
     "content_scripts": [{
       "matches": ["<all_urls>"],
