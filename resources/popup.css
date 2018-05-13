@@ -18,3 +18,9 @@ button.active {
 .options {
   width: 100%;
 }
+.options button {
+  width: 100%;
+}
+.options th {
+  padding: 0;
+}
