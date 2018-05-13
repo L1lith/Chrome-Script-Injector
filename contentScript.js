@@ -10,7 +10,7 @@ function setup() {
       } catch(error) { return reject('Config Invalid JSON')}
       if (typeof config != 'object' || config === null) return reject('Config not an object')
       const {files} = config
-      if (Array.isArray(files)) console.log()
+      if (!Array.isArray(files)) return reject('Files Not Array')
       return Promise.all(files.map(fileConfig => setupFile))
     })
   })
