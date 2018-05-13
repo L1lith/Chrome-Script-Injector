@@ -22,4 +22,4 @@ function run() {
   })
 }
 
-window.addEventListener('load', run)
+document.addEventListener('load', run)
