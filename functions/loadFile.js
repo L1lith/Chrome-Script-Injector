@@ -3,7 +3,7 @@ function loadFile(id) {
     const path = 'wsi-file'+id
     window.chrome.storage.sync.get(path, items => {
       const item = items[path]
-      if (typeof item != 'string' || item.length < 1) return reject('file not found')
+      if (typeof item != 'string') return reject('file not found')
       resolve(item)
     })
   })

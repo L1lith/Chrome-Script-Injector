@@ -78,6 +78,8 @@ class Application extends Component {
         const id = config.siteFiles[domain][type]
         loadFile(id).then(content => {
           this.editor.value = content
+        }).catch(error => {
+          
         })
       })
     } else {
