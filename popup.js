@@ -95,7 +95,6 @@ class Application extends Component {
     this.isSaving = true
     const {config} = this.props
     const doneSaving = ()=>{this.setState({...this.state, isSaving: false}); this.isSaving = false}
-    console.log({config})
     if (this.state.local === true) {
       queryCurrentTab().then(tab => {
         const domain = getDomain(tab.url)

@@ -2,7 +2,7 @@ import createElement from './createElement'
 
 const fileKindToElement = {
   javascript: () => createElement('script', {attributes: {type: 'text/javascript'}}),
-  css: () => createElement('link', {attributes: {rel: 'stylesheet', type: 'text/css'}})
+  css: () => createElement('style', {attributes: {rel: 'stylesheet', type: 'text/css'}})
 }
 
 export function setupFile(id, kind) {
@@ -14,7 +14,7 @@ export function setupFile(id, kind) {
       if (typeof file != 'string' || file.length < 1) return reject('File Not Found')
       const element = fileKindToElement[kind]()
       element.innerHTML = file
-      document.body.appendChild(element)
+      document.head.appendChild(element)
       resolve(element)
     })
   })
